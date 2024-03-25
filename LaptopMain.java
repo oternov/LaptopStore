@@ -1,22 +1,25 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
 public class LaptopMain {
         public static void main(String[] args) {
                 Laptop laptop1 = new Laptop("Lenovo", "IdeaPad 3", "Intel Core i5-1035G1", 8,
-                                256, "Windows", "Integrated Intel UHD Graphics", 15.6, "Серый", 50000);
+                                256, "Windows", "Integrated Intel UHD Graphics", 15.6, "Gray", 50000);
                 Laptop laptop2 = new Laptop("HP", "Pavilion 15-eg0003ur", "Intel Core i7-1165G7", 16,
-                                512, "Windows", "NVIDIA GeForce MX450", 15.6, "Красный", 80000);
+                                512, "Windows", "NVIDIA GeForce MX450", 15.6, "Red", 80000);
                 Laptop laptop3 = new Laptop("ASUS", "ZenBook 14 UX425EA", "Intel Core i5-1135G7", 8,
-                                512, "Linux", "Integrated Intel Iris Xe Graphics", 14.0, "Белый", 60000);
+                                512, "Linux", "Integrated Intel Iris Xe Graphics", 14.0,
+                                "White", 60000);
                 Laptop laptop4 = new Laptop("ASUS", "ZenBook 14 UX425EA", "Intel Core i5-1135G7", 8,
-                                512, "Linux", "Integrated Intel Iris Xe Graphics", 14.0, "Белый", 60000);
+                                512, "Linux", "Integrated Intel Iris Xe Graphics", 14.0, "White", 60000);
                 Laptop laptop5 = new Laptop("Dell", "XPS 13", "Intel Core i7-10710U", 16,
-                                1024, "Windows", "Integrated Intel UHD Graphics", 13.3, "Черный", 120000);
+                                1024, "Windows", "Integrated Intel UHD Graphics", 13.3, "Black", 120000);
                 Laptop laptop6 = new Laptop("Apple", "MacBook Air", "Apple M1", 8,
-                                256, "macOS", "Integrated 7-core GPU", 13.3, "Золотой", 95000);
+                                256, "macOS", "Integrated 7-core GPU", 13.3, "Golden", 95000);
 
                 HashSet<Laptop> laptopSet = new HashSet<>(
                                 Arrays.asList(laptop1, laptop2, laptop3, laptop4, laptop5, laptop6));
@@ -41,68 +44,66 @@ public class LaptopMain {
                 scanner.nextLine();
 
                 String filterValue;
+                Map<String, String> criteriaMap = new HashMap<>();
+                String criteriaKey = "";
+
                 switch (number) {
                         case 1:
                                 System.out.println("Введите бренд:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "brand", filterValue);
+                                criteriaKey = "brand";
                                 break;
                         case 2:
                                 System.out.println("Введите модель:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "model", filterValue);
+                                criteriaKey = "model";
                                 break;
                         case 3:
                                 System.out.println("Введите процессор:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "processor", filterValue);
+                                criteriaKey = "processor";
                                 break;
                         case 4:
                                 System.out.println("Введите оперативную память:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "ram", filterValue);
+                                criteriaKey = "ram";
                                 break;
                         case 5:
                                 System.out.println("Введите объем жесткого диска:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "hardDrive", filterValue);
+                                criteriaKey = "hardDrive";
                                 break;
                         case 6:
                                 System.out.println("Введите операционную систему:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "operatingSystem", filterValue);
+                                criteriaKey = "operatingSystem";
                                 break;
                         case 7:
                                 System.out.println("Введите видеокарту:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "videoCard", filterValue);
+                                criteriaKey = "videoCard";
                                 break;
                         case 8:
                                 System.out.println("Введите диагональ экрана:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "screenDiagonal", filterValue);
+                                criteriaKey = "screenDiagonal";
                                 break;
                         case 9:
                                 System.out.println("Введите цвет:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "color", filterValue);
+                                criteriaKey = "color";
                                 break;
                         case 10:
                                 System.out.println("Введите цену:");
-                                filterValue = scanner.nextLine();
-                                filterLaptops(laptopSet, "price", filterValue);
+                                criteriaKey = "price";
                                 break;
                         default:
                                 System.out.println("Неверный критерий.");
-                                break;
+                                scanner.close();
+                                return;
                 }
+
+                filterValue = scanner.nextLine();
+                criteriaMap.put(criteriaKey, filterValue);
+                filterLaptops(laptopSet, criteriaMap);
 
                 scanner.close();
         }
 
-        private static void filterLaptops(Set<Laptop> laptops, String criteria, String value) {
+        private static void filterLaptops(Set<Laptop> laptops, Map<String, String> criteria) {
                 for (Laptop laptop : laptops) {
-                        if (laptop.matches(criteria, value)) {
+                        if (laptop.matches(criteria)) {
                                 System.out.println("Найден " + laptop);
                         }
                 }

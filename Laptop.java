@@ -14,6 +14,7 @@
 // -Отфильтровать ноутбуки их первоначального множества и вывести проходящие по
 // условиям.
 
+import java.util.Map;
 import java.util.Objects;
 
 public class Laptop {
@@ -114,7 +115,7 @@ public class Laptop {
         this.screenDiagonal = screenDiagonal;
     }
 
-    public void setColor(String color) {
+    public void setcolor(String color) {
         this.color = color;
     }
 
@@ -122,36 +123,63 @@ public class Laptop {
         this.price = price;
     }
 
-    public boolean matches(String criteria, String value) {
-        try {
-            switch (criteria) {
-                case "brand":
-                    return this.getBrand().toLowerCase().contains(value.toLowerCase());
-                case "model":
-                    return this.getModel().toLowerCase().contains(value.toLowerCase());
-                case "processor":
-                    return this.getProcessor().toLowerCase().contains(value.toLowerCase());
-                case "ram":
-                    return this.getRam() >= Integer.parseInt(value);
-                case "hardDrive":
-                    return this.getHardDrive() >= Integer.parseInt(value);
-                case "operatingSystem":
-                    return this.getOperatingSystem().toLowerCase().contains(value.toLowerCase());
-                case "videoCard":
-                    return this.getVideoCard().toLowerCase().contains(value.toLowerCase());
-                case "screenDiagonal":
-                    return this.getScreenDiagonal() >= Double.parseDouble(value);
-                case "color":
-                    return this.getColor().toLowerCase().contains(value.toLowerCase());
-                case "price":
-                    return this.getPrice() >= Double.parseDouble(value);
-                default:
-                    return false;
+    public boolean matches(Map<String, String> criteria) {
+        for (Map.Entry<String, String> entry : criteria.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue().toLowerCase();
+
+            try {
+                switch (key) {
+                    case "brand":
+                        if (!this.getBrand().toLowerCase().contains(value))
+                            return false;
+                        break;
+                    case "model":
+                        if (!this.getModel().toLowerCase().contains(value))
+                            return false;
+                        break;
+                    case "processor":
+                        if (!this.getProcessor().toLowerCase().contains(value))
+                            return false;
+                        break;
+                    case "ram":
+                        if (this.getRam() < Integer.parseInt(value))
+                            return false;
+                        break;
+                    case "hardDrive":
+                        if (this.getHardDrive() < Integer.parseInt(value))
+                            return false;
+                        break;
+                    case "operatingSystem":
+                        if (!this.getOperatingSystem().toLowerCase().contains(value))
+                            return false;
+                        break;
+                    case "videoCard":
+                        if (!this.getVideoCard().toLowerCase().contains(value))
+                            return false;
+                        break;
+                    case "screenDiagonal":
+                        if (this.getScreenDiagonal() < Double.parseDouble(value))
+                            return false;
+                        break;
+                    case "color":
+                        if (!this.getColor().toLowerCase().contains(value))
+                            return false;
+                        break;
+                    case "price":
+                        if (this.getPrice() < Double.parseDouble(value))
+                            return false;
+                        break;
+                    default:
+                        System.out.println("Неизвестный критерий: " + key);
+                        return false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Ошибка при преобразовании числового значения критерия: " + key);
+                return false;
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Ошибка при вводе числа: " + e.getMessage());
-            return false;
         }
+        return true;
     }
 
     @Override
