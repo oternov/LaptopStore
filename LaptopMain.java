@@ -18,7 +18,8 @@ public class LaptopMain {
                 Laptop laptop6 = new Laptop("Apple", "MacBook Air", "Apple M1", 8,
                                 256, "macOS", "Integrated 7-core GPU", 13.3, "Золотой", 95000);
 
-                HashSet<Laptop> laptopSet = new HashSet<>(Arrays.asList(laptop1, laptop2, laptop3, laptop4, laptop5, laptop6));
+                HashSet<Laptop> laptopSet = new HashSet<>(
+                                Arrays.asList(laptop1, laptop2, laptop3, laptop4, laptop5, laptop6));
                 for (Laptop laptop : laptopSet) {
                         System.out.println(laptop);
                 }
